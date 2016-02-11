@@ -21,11 +21,10 @@ ActiveRecord::Schema.define(version: 20160210084646) do
     t.string   "rating"
     t.string   "genre"
     t.string   "director"
-    t.date     "release_date"
     t.string   "runtime"
     t.integer  "user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "movies", ["user_id"], name: "index_movies_on_user_id"

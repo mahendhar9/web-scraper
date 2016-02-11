@@ -1,10 +1,11 @@
 class MoviesController < ApplicationController
   before_action :set_movie, only: [:show, :edit, :update, :destroy]
+  before_action :scrape, only: [:new]
 
   # GET /movies
   # GET /movies.json
   def index
-    @movies = Movie.all
+    @movies = current_user.movies.all
   end
 
   # GET /movies/1
@@ -14,7 +15,18 @@ class MoviesController < ApplicationController
 
   # GET /movies/new
   def new
-    @movie = Movie.new
+    if @movie_data
+      @movie = current_user.movies.new(
+        title: @movie_data.title,
+        hotness: @movie_data.hotness,
+        image_url: @movie_data.image_url,
+        synopsis: @movie_data.synopsis,
+        rating: @movie_data.rating,
+        genre: @movie_data.genre,
+        director: @movie_data.director,
+        runtime: @movie_data.runtime
+        )
+    end
   end
 
   # GET /movies/1/edit
@@ -24,7 +36,7 @@ class MoviesController < ApplicationController
   # POST /movies
   # POST /movies.json
   def create
-    @movie = Movie.new(movie_params)
+    @movie = current_user.movies.new(movie_params)
 
     respond_to do |format|
       if @movie.save
@@ -70,5 +82,11 @@ class MoviesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
       params.require(:movie).permit(:title, :hotness, :image_url, :synopsis, :rating, :genre, :director, :release_date, :runtime, :user_id)
+    end
+
+    def scrape
+      s = Scrape.new
+      s.scrape_movie(params[:search].to_s)
+      @movie_data = s
     end
 end

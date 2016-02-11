@@ -8,7 +8,6 @@ class CreateMovies < ActiveRecord::Migration
       t.string :rating
       t.string :genre
       t.string :director
-      t.date :release_date
       t.string :runtime
       t.references :user, index: true, foreign_key: true
 

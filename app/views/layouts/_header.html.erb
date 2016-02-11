@@ -10,6 +10,13 @@
       <%= link_to "Web Scraper", root_path, class: "navbar-brand" %>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
+      <% if current_user %>
+        <%= form_tag new_movie_path, :method => 'get', class: "navbar-form navbar-left" do %>
+          <%= text_field_tag :search, params[:movie_url], class: "form-control", placeholder: "Rotten Tomatoes URL"  %>
+          <%= submit_tag "Scrape", :name => nil, class: "btn btn-default" %>
+          <%= link_to "or New Movie", new_movie_path, class: "btn btn-default" %>
+        <% end %>
+      <% end %>
       <ul class="nav navbar-nav pull-right">
         <% if user_signed_in? %>
           <li><%= link_to "Home", root_path %></li>
